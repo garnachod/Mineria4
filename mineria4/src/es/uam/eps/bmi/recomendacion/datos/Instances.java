@@ -26,6 +26,17 @@ public class Instances {
         this.listaDeInstance.add(inst);
     }
     
+    public int nInstances(){
+        return this.listaDeInstance.size();
+    }
+    
+    public int getPosFromColumn(String nColumna){
+        if(this.ColumnPosition.containsKey(nColumna)){
+            return this.ColumnPosition.get(nColumna);
+        }
+        return -1;
+    }
+    
     public void addColumn(String column){
         int pos = this.Columns.size();
         this.ColumnPosition.put(column, pos);
@@ -35,12 +46,17 @@ public class Instances {
     public ArrayList<Instance> getListInstance(){
         return this.listaDeInstance;
     }
-    //filtrado
-    public Instances getInstancesWhereColumnEquals(String column, String data){
+    private Instances getInstanceInicializadaColumnas(){
         Instances retorno = new Instances();
         for(String columna: this.Columns){
             retorno.addColumn(columna);
         }
+        return retorno;
+    }
+    
+    //filtrado
+    public Instances getInstancesWhereColumnEquals(String column, String data){
+        Instances retorno = this.getInstanceInicializadaColumnas();
         int pos = this.ColumnPosition.get(column);
         for(Instance inst : this.listaDeInstance){
             if(data.equals((String)inst.getElementAtPos(pos))){
@@ -50,10 +66,7 @@ public class Instances {
         return retorno;
     }
     public Instances getListInstancesWhereColumnEquals(String column, double data){
-        Instances retorno = new Instances();
-        for(String columna: this.Columns){
-            retorno.addColumn(columna);
-        }
+        Instances retorno = this.getInstanceInicializadaColumnas();
         int pos = this.ColumnPosition.get(column);
         for(Instance inst : this.listaDeInstance){
             if(data == (double)inst.getElementAtPos(pos)){
@@ -63,10 +76,7 @@ public class Instances {
         return retorno;
     }
     public Instances getListInstancesWhereColumnEquals(String column, int data){
-        Instances retorno = new Instances();
-        for(String columna: this.Columns){
-            retorno.addColumn(columna);
-        }
+        Instances retorno = this.getInstanceInicializadaColumnas();
         int pos = this.ColumnPosition.get(column);
         for(Instance inst : this.listaDeInstance){
             if(data == (int)inst.getElementAtPos(pos)){
@@ -75,4 +85,37 @@ public class Instances {
         }
         return retorno;
     }
+    public Instances getListInstancesWhereColumnDistinct(String column, String data){
+        Instances retorno = this.getInstanceInicializadaColumnas();
+        int pos = this.ColumnPosition.get(column);
+        for(Instance inst : this.listaDeInstance){
+            if(!data.equals((String)inst.getElementAtPos(pos))){
+                retorno.addInstance(inst);
+            }
+        }
+        return retorno;
+    }
+    
+    public Instances getListInstancesWhereColumnDistinct(String column, double data){
+        Instances retorno = this.getInstanceInicializadaColumnas();
+        int pos = this.ColumnPosition.get(column);
+        for(Instance inst : this.listaDeInstance){
+            if(data != (double)inst.getElementAtPos(pos)){
+                retorno.addInstance(inst);
+            }
+        }
+        return retorno;
+    }
+    
+    public Instances getListInstancesWhereColumnDistinct(String column, int data){
+        Instances retorno = this.getInstanceInicializadaColumnas();
+        int pos = this.ColumnPosition.get(column);
+        for(Instance inst : this.listaDeInstance){
+            if(data != (int)inst.getElementAtPos(pos)){
+                retorno.addInstance(inst);
+            }
+        }
+        return retorno;
+    }
+    
 }
