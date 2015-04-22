@@ -29,6 +29,9 @@ public class Instances {
     public int nInstances(){
         return this.listaDeInstance.size();
     }
+    public boolean isEmpty(){
+        return this.nInstances() <= 0;
+    }
     
     public int getPosFromColumn(String nColumna){
         if(this.ColumnPosition.containsKey(nColumna)){

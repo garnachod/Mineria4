@@ -24,9 +24,10 @@ public class MainFiltradoColaborativo {
         int idUsuario = 75;
         List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
         
+        System.out.println("Recomendaciones");
         for(int i=0; i< 20; i++){
             Recomendacion r = recomendaciones.get(i);
-            System.out.println(r.getIdElemRecom() +"\t"+ r.getPuntuacion());
+            System.out.println("movieID = "+r.getIdElemRecom() +"\t"+ r.getPuntuacion());
         }
     }
 }

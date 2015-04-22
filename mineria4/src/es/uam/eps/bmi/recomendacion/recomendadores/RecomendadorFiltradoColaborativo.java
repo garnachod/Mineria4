@@ -47,7 +47,6 @@ public class RecomendadorFiltradoColaborativo {
             //conseguimos el user id de una instancia, para seguir un orden usamos la del primer usuario siguente
             Instance primeraInstancia = informacionNoUsuario.getInstanceAtPos(0);
             int idUsuarioCompara = (int)primeraInstancia.getElementAtPos(posInformacionUsario);
-            System.out.println(idUsuarioCompara);
             //conseguimos la informacion de ese usuario y la eliminamos de la lista
             Instances informacionUsuarioCompara = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuarioCompara);
             informacionNoUsuario = informacionNoUsuario.getListInstancesWhereColumnDistinct(TagUsuario, idUsuarioCompara);
@@ -77,7 +76,6 @@ public class RecomendadorFiltradoColaborativo {
         ArrayList<MemSimilitud> mejoresCosenos = new ArrayList<>();
         for(int i = 0; i < this.K; i++){
             MemSimilitud mem = this.similitudes.poll();
-            System.out.println(mem.getId() + "\t" + mem.getSimilitud());
             mejoresCosenos.add(mem);
         }
         //conseguimos el rating dado un item
@@ -106,13 +104,19 @@ public class RecomendadorFiltradoColaborativo {
             int incedencias = auxR.getIncidencias();
             
             if(incedencias > 1){
-                double puntuacion = auxR.getRating();
-                Recomendacion rec = new Recomendacion(elemID, puntuacion);
-                recomendacion.add(rec);
+                //debemos eliminar los elementos que el usuario ya ha votado
+                Instances usuarioTieneElem = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
+                if(usuarioTieneElem.isEmpty()){
+                    double puntuacion = auxR.getRating();
+                    Recomendacion rec = new Recomendacion(elemID, puntuacion);
+                    recomendacion.add(rec);
+                }
+                
             }
             
         }
         //debemos eliminar los elementos que el usuario ya ha votado
+        
         Collections.sort(recomendacion);
         return recomendacion;
     }
