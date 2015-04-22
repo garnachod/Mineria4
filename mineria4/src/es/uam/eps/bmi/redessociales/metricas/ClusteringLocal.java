@@ -29,7 +29,10 @@ public class ClusteringLocal implements MetricaNodo {
         int grado = grafo.getGrado(idNodo);
         int conexionesPosibles = ((grado * (grado - 1)) / 2);
         
-        return (conexionesPosibles / (double) conexionesReales);
+        if (conexionesPosibles > 0) {
+            return (conexionesReales / (double)conexionesPosibles);
+        }
+        return 0;        
     }
     
     public static void main (String args[]) {
