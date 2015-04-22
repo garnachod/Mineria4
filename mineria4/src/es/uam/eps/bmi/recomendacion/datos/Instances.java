@@ -36,7 +36,9 @@ public class Instances {
         }
         return -1;
     }
-    
+    public Instance getInstanceAtPos(int pos){
+        return this.listaDeInstance.get(pos);
+    }
     public void addColumn(String column){
         int pos = this.Columns.size();
         this.ColumnPosition.put(column, pos);

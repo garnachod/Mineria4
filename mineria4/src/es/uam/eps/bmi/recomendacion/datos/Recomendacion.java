@@ -9,7 +9,7 @@ package es.uam.eps.bmi.recomendacion.datos;
  *
  * @author dani
  */
-public class Recomendacion {
+public class Recomendacion implements Comparable {
     private int idElemRecom;
     private double puntuacion;
     
@@ -44,5 +44,25 @@ public class Recomendacion {
      */
     public void setPuntuacion(double puntuacion) {
         this.puntuacion = puntuacion;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if (!(o instanceof Recomendacion)) {
+            return Integer.MAX_VALUE;
+        }
+        
+        double posA = this.getPuntuacion();
+        double posB = ((Recomendacion)o).getPuntuacion();
+        
+        if (posA == posB) {
+            return 0;
+        }
+        //queremos que se ordenen de mayor a menor
+        if (posA > posB) {
+            return -1;
+        }
+        
+        return 1;
     }
 }
