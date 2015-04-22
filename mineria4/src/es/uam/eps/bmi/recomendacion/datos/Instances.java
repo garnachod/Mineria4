@@ -67,6 +67,7 @@ public class Instances {
             if(data.equals((String)inst.getElementAtPos(pos))){
                 retorno.addInstance(inst);
             }
+            
         }
         return retorno;
     }
@@ -77,6 +78,7 @@ public class Instances {
             if(data == (double)inst.getElementAtPos(pos)){
                 retorno.addInstance(inst);
             }
+            
         }
         return retorno;
     }
@@ -84,8 +86,13 @@ public class Instances {
         Instances retorno = this.getInstanceInicializadaColumnas();
         int pos = this.ColumnPosition.get(column);
         for(Instance inst : this.listaDeInstance){
-            if(data == (int)inst.getElementAtPos(pos)){
+            int dataComp = (int)inst.getElementAtPos(pos);
+            if(data == dataComp){
                 retorno.addInstance(inst);
+            }
+            //suponemos los datos ordenados, se ganan unos 12 segundos
+            if(data < dataComp){
+                break;
             }
         }
         return retorno;
@@ -122,5 +129,22 @@ public class Instances {
         }
         return retorno;
     }
-    
+    public Instances getInstancesNoOcultas(){
+        Instances retorno = this.getInstanceInicializadaColumnas();
+        for(Instance inst : this.listaDeInstance){
+            if(!inst.isOculto()){
+                retorno.addInstance(inst);
+            }
+        }
+         return retorno;
+    }
+     public Instances getInstancesOcultas(){
+        Instances retorno = this.getInstanceInicializadaColumnas();
+        for(Instance inst : this.listaDeInstance){
+            if(inst.isOculto()){
+                retorno.addInstance(inst);
+            }
+        }
+        return retorno;
+    }
 }

@@ -49,6 +49,7 @@ public class LectorUserRated {
             }
             instances.addInstance(instance);
         }
+        in.close();
         return instances;
     }
 }

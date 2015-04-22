@@ -21,6 +21,7 @@ import java.util.PriorityQueue;
  */
 public class RecomendadorFiltradoColaborativo {
     private int K = 20;
+    private int incidenciasMinimo = 0;
     private PriorityQueue<MemSimilitud> similitudes;
     
     public RecomendadorFiltradoColaborativo(){
@@ -32,6 +33,11 @@ public class RecomendadorFiltradoColaborativo {
         this.similitudes = new PriorityQueue();
         //cogemos las instancias solo de un usuario dado
         Instances informacionUsuario = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuario);
+        if(informacionUsuario.nInstances() <= 0){
+            return recomendacion;
+        }
+        //limpiamos del usuario objetivo las instancias ocultas
+        informacionUsuario = informacionUsuario.getInstancesNoOcultas();
         if(informacionUsuario.nInstances() <= 0){
             return recomendacion;
         }
@@ -49,6 +55,8 @@ public class RecomendadorFiltradoColaborativo {
             int idUsuarioCompara = (int)primeraInstancia.getElementAtPos(posInformacionUsario);
             //conseguimos la informacion de ese usuario y la eliminamos de la lista
             Instances informacionUsuarioCompara = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuarioCompara);
+            //limpiamos las filas ocultas del usuario
+            informacionUsuarioCompara = informacionUsuarioCompara.getInstancesNoOcultas();
             informacionNoUsuario = informacionNoUsuario.getListInstancesWhereColumnDistinct(TagUsuario, idUsuarioCompara);
             //generamos tuplas elemento de voto y valoracion, y se anaden por cada usuario en un Heap
             //tenemos que usar PosicionElementoRating por la ordenacion
@@ -103,7 +111,7 @@ public class RecomendadorFiltradoColaborativo {
             AuxObtenerRating auxR = hasmGetRatingFinal.get(elemID);
             int incedencias = auxR.getIncidencias();
             
-            if(incedencias > 1){
+            if(incedencias > incidenciasMinimo){
                 //debemos eliminar los elementos que el usuario ya ha votado
                 Instances usuarioTieneElem = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
                 if(usuarioTieneElem.isEmpty()){
