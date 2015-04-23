@@ -27,12 +27,13 @@ public class ClusteringLocal implements MetricaNodo {
         
         // Conexiones posibles entre todos los pares de amigos
         int grado = grafo.getGrado(idNodo);
-        int conexionesPosibles = ((grado * (grado - 1)) / 2);
         
-        if (conexionesPosibles > 0) {
-            return (conexionesReales / (double)conexionesPosibles);
-        }
-        return 0;        
+        if (grado < 2){
+            return 0;
+        }        
+        int conexionesPosibles = ((grado * (grado - 1)) / 2);
+        return (conexionesReales / (double)conexionesPosibles);
+        
     }
     
     public static void main (String args[]) {
@@ -40,7 +41,11 @@ public class ClusteringLocal implements MetricaNodo {
         ClusteringLocal cl = new ClusteringLocal();
         g.addArista("a", "b");
         g.addArista("b", "c");
+        g.addArista("b", "d");
+        g.addArista("d", "a");
         g.addArista("a", "c");
+        g.addArista("b", "c");
+        g.addArista("d", "c");
         System.out.println("Clustering de b: " + cl.calcular(g, "b"));
     }
 }

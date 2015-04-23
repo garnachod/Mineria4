@@ -91,9 +91,9 @@ public class Instances {
                 retorno.addInstance(inst);
             }
             //suponemos los datos ordenados, se ganan unos 12 segundos
-            /*if(data < dataComp){
+            if(data < dataComp){
                 break;
-            }*/
+            }
         }
         return retorno;
     }

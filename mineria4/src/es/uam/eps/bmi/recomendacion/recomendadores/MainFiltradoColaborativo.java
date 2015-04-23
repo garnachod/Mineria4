@@ -22,7 +22,15 @@ public class MainFiltradoColaborativo {
         Instances instancias = lector.leeFichero("./src/user_ratedmovies.dat");
         RecomendadorFiltradoColaborativo recomendador = new RecomendadorFiltradoColaborativo();
         int idUsuario = 75;
+        long time_start, time_end;
+        time_start = System.currentTimeMillis();
         List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
+        time_end = System.currentTimeMillis(); 
+        System.out.println("the task has taken "+ ( time_end - time_start ) +" milliseconds");
+        time_start = System.currentTimeMillis();
+        recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
+        time_end = System.currentTimeMillis();
+        System.out.println("the task has taken "+ ( time_end - time_start ) +" milliseconds");
         
         System.out.println("Recomendaciones");
         for(int i=0; i< 20; i++){

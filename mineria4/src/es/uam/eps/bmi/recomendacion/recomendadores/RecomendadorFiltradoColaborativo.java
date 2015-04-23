@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import org.apache.commons.collections15.map.FastHashMap;
 
 /**
  *
@@ -23,6 +24,8 @@ public class RecomendadorFiltradoColaborativo {
     private int K = 20;
     private int incidenciasMinimo = 0;
     private PriorityQueue<MemSimilitud> similitudes;
+    private HashMap<Integer, Instances> InstancesDeIDElem = null;
+    private ArrayList<Integer> idsDiferentesUsuarios = null;
     
     public RecomendadorFiltradoColaborativo(){
         
@@ -31,8 +34,21 @@ public class RecomendadorFiltradoColaborativo {
     public List<Recomendacion> recomiendaUsuario(String TagUsuario,String TagRating,String TagIDElem, int idUsuario, Instances instancias){
         ArrayList<Recomendacion> recomendacion = new ArrayList<>();
         this.similitudes = new PriorityQueue();
+        if(this.idsDiferentesUsuarios == null){
+            this.idsDiferentesUsuarios = instancias.getListaIDNoRepetidosColumna(TagUsuario);
+        }
+        
+        if(this.InstancesDeIDElem == null){
+            this.InstancesDeIDElem = new FastHashMap<>();
+            for(int identificadorUsuarioAux:idsDiferentesUsuarios){
+                this.InstancesDeIDElem.put(identificadorUsuarioAux, instancias.getListInstancesWhereColumnEquals(TagUsuario, identificadorUsuarioAux));
+                //instancias = instancias.getListInstancesWhereColumnDistinct(TagUsuario, identificadorUsuarioAux);
+            }
+        }
+        
         //cogemos las instancias solo de un usuario dado
-        Instances informacionUsuario = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuario);
+        //Instances informacionUsuario = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuario);
+        Instances informacionUsuario = this.InstancesDeIDElem.get(idUsuario);
         if(informacionUsuario.nInstances() <= 0){
             return recomendacion;
         }
@@ -42,22 +58,23 @@ public class RecomendadorFiltradoColaborativo {
             return recomendacion;
         }
         //cogemos las instancias que no son de un usuario
-        Instances informacionNoUsuario = instancias.getListInstancesWhereColumnDistinct(TagUsuario, idUsuario);
+        /*Instances informacionNoUsuario = instancias.getListInstancesWhereColumnDistinct(TagUsuario, idUsuario);
         if(informacionNoUsuario.nInstances() <= 0){
             return recomendacion;
-        }
+        }*/
         int posInformacionUsario = instancias.getPosFromColumn(TagUsuario);
         int posRating = instancias.getPosFromColumn(TagRating);
         int posIDElem = instancias.getPosFromColumn(TagIDElem);
-        while(informacionNoUsuario.nInstances() > 0){
+        for(int idUsuarioCompara:idsDiferentesUsuarios){
             //conseguimos el user id de una instancia, para seguir un orden usamos la del primer usuario siguente
-            Instance primeraInstancia = informacionNoUsuario.getInstanceAtPos(0);
-            int idUsuarioCompara = (int)primeraInstancia.getElementAtPos(posInformacionUsario);
+            //Instance primeraInstancia = informacionNoUsuario.getInstanceAtPos(0);
+            //int idUsuarioCompara = (int)primeraInstancia.getElementAtPos(posInformacionUsario);
             //conseguimos la informacion de ese usuario y la eliminamos de la lista
-            Instances informacionUsuarioCompara = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuarioCompara);
+            //Instances informacionUsuarioCompara = instancias.getListInstancesWhereColumnEquals(TagUsuario, idUsuarioCompara);7
+            Instances informacionUsuarioCompara = this.InstancesDeIDElem.get(idUsuarioCompara);
             //limpiamos las filas ocultas del usuario
             informacionUsuarioCompara = informacionUsuarioCompara.getInstancesNoOcultas();
-            informacionNoUsuario = informacionNoUsuario.getListInstancesWhereColumnDistinct(TagUsuario, idUsuarioCompara);
+            //informacionNoUsuario = informacionNoUsuario.getListInstancesWhereColumnDistinct(TagUsuario, idUsuarioCompara);
             //generamos tuplas elemento de voto y valoracion, y se anaden por cada usuario en un Heap
             //tenemos que usar PosicionElementoRating por la ordenacion
             PriorityQueue<PosicionElementoRating> heapUSR = new PriorityQueue();
@@ -91,7 +108,8 @@ public class RecomendadorFiltradoColaborativo {
         for(MemSimilitud mem : mejoresCosenos){
             int userID = mem.getId();
             double similitud = mem.getSimilitud();
-            Instances informacionIsuarioParecido = instancias.getListInstancesWhereColumnEquals(TagUsuario, userID);
+            //Instances informacionIsuarioParecido = instancias.getListInstancesWhereColumnEquals(TagUsuario, userID);
+            Instances informacionIsuarioParecido = this.InstancesDeIDElem.get(userID);
             for(Instance inst : informacionIsuarioParecido.getListInstance()){
                 int idElm = (int)inst.getElementAtPos(posIDElem);
                 double rat = (double)inst.getElementAtPos(posRating);
