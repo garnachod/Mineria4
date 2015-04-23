@@ -2,8 +2,11 @@
 package es.uam.eps.bmi.redessociales.grafos.generadores;
 
 import edu.uci.ics.jung.algorithms.generators.random.BarabasiAlbertGenerator;
+import edu.uci.ics.jung.algorithms.generators.random.ErdosRenyiGenerator;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.SparseGraph;
+import edu.uci.ics.jung.graph.UndirectedGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
 import es.uam.eps.bmi.redessociales.grafos.escritores.EscritorGrafoNoDirigido;
 import java.util.HashSet;
@@ -13,11 +16,11 @@ import org.apache.commons.collections15.Factory;
 /**
  * @author Diego Castaño y Daniel Garnacho
  */
-public class GeneradorBarabasiAlbert {
-    BarabasiAlbertGenerator bag;
+public class GeneradorErdosRenyi {
+    ErdosRenyiGenerator erg;
     
-    public GeneradorBarabasiAlbert(int numNodosIniciales) {
-        Factory<Graph<String, Integer>> graphFactory = SparseGraph.getFactory();
+    public GeneradorErdosRenyi(int numNodosIniciales) {
+        Factory<UndirectedGraph<String, Integer>> graphFactory = UndirectedSparseGraph.getFactory();
 
         Factory<String> vertexFactory =
                 new Factory<String>() {
@@ -39,25 +42,24 @@ public class GeneradorBarabasiAlbert {
             }
         };
 
-        HashSet<String> seedVertices = new HashSet();
+        HashSet<String> seedVertices = new HashSet<>();
         for (int i = 0; i < numNodosIniciales; i++) {
             seedVertices.add(i + "");
         }
-        bag = new BarabasiAlbertGenerator(graphFactory, vertexFactory, edgeFactory, seedVertices.size(), 1, seedVertices);
+        erg = new ErdosRenyiGenerator(graphFactory, vertexFactory, edgeFactory, seedVertices.size(), 0.5);
     }
     
-    public Graph<String, Integer> getGrafo (int numEpocas) {
-        bag.evolveGraph(numEpocas);
-        Graph<String, Integer> grafo = bag.create();
+    public Graph<String, Integer> getGrafo () {
+        Graph<String, Integer> grafo = (Graph<String, Integer>) erg.create();
         return grafo;
     }
     
     public static void main (String args[]) {
         
-        GeneradorBarabasiAlbert gba = new GeneradorBarabasiAlbert(1);        
+        GeneradorErdosRenyi ger = new GeneradorErdosRenyi(100);
         // Sacar grafo no dirigido
-        GrafoNoDirigido g = new GrafoNoDirigido((Graph<String, Integer>) gba.getGrafo(1000));
-        EscritorGrafoNoDirigido.escribirGrafo(g, "barabasi.csv");
+        GrafoNoDirigido g = new GrafoNoDirigido(ger.getGrafo());
+        EscritorGrafoNoDirigido.escribirGrafo(g, "erdos.csv");
         
     }
 }
