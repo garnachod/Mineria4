@@ -111,7 +111,7 @@ public class RecomendadorFiltradoColaborativo {
             AuxObtenerRating auxR = hasmGetRatingFinal.get(elemID);
             int incedencias = auxR.getIncidencias();
             
-            if(incedencias > incidenciasMinimo){
+            if(incedencias > this.incidenciasMinimo){
                 //debemos eliminar los elementos que el usuario ya ha votado
                 Instances usuarioTieneElem = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
                 if(usuarioTieneElem.isEmpty()){

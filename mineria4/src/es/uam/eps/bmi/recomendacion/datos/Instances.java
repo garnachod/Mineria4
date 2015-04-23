@@ -91,9 +91,9 @@ public class Instances {
                 retorno.addInstance(inst);
             }
             //suponemos los datos ordenados, se ganan unos 12 segundos
-            if(data < dataComp){
+            /*if(data < dataComp){
                 break;
-            }
+            }*/
         }
         return retorno;
     }
@@ -127,6 +127,20 @@ public class Instances {
                 retorno.addInstance(inst);
             }
         }
+        return retorno;
+    }
+    
+    public ArrayList<Integer> getListaIDNoRepetidosColumna(String column){
+        HashMap<Integer, Boolean> hashNoRep = new HashMap<Integer, Boolean>();
+        int pos = this.ColumnPosition.get(column);
+        for(Instance inst : this.listaDeInstance){
+            if(hashNoRep.containsKey(inst.getElementAtPos(pos))){
+                
+            }else{
+                hashNoRep.put((int)inst.getElementAtPos(pos), Boolean.TRUE);
+            }
+        }
+        ArrayList<Integer> retorno = new ArrayList<>(hashNoRep.keySet());
         return retorno;
     }
     public Instances getInstancesNoOcultas(){

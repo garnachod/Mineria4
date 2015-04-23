@@ -21,6 +21,9 @@ public class AuxObtenerRating {
     }
     
     public double getRating(){
+        if(this.sim == 0.0){
+            return 0.0;
+        }
         return this.ratingPorSim / this.sim;
     }
     public int getIncidencias(){
