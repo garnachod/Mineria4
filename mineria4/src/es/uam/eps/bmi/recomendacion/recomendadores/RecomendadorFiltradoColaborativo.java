@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import org.apache.commons.collections15.map.FastHashMap;
 
 /**
@@ -65,6 +67,14 @@ public class RecomendadorFiltradoColaborativo {
         int posInformacionUsario = instancias.getPosFromColumn(TagUsuario);
         int posRating = instancias.getPosFromColumn(TagRating);
         int posIDElem = instancias.getPosFromColumn(TagIDElem);
+        
+        SortedSet<PosicionElementoRating> sortedDataUSR = new TreeSet();
+        for(Instance dataUSR : informacionUsuario.getListInstance()){
+            int idElem = (int)dataUSR.getElementAtPos(posIDElem);
+            double rating = (double)dataUSR.getElementAtPos(posRating);
+            PosicionElementoRating dat = new PosicionElementoRating(idElem,rating);
+            sortedDataUSR.add(dat);
+        }
         for(int idUsuarioCompara:idsDiferentesUsuarios){
             //conseguimos el user id de una instancia, para seguir un orden usamos la del primer usuario siguente
             //Instance primeraInstancia = informacionNoUsuario.getInstanceAtPos(0);
@@ -77,13 +87,13 @@ public class RecomendadorFiltradoColaborativo {
             //informacionNoUsuario = informacionNoUsuario.getListInstancesWhereColumnDistinct(TagUsuario, idUsuarioCompara);
             //generamos tuplas elemento de voto y valoracion, y se anaden por cada usuario en un Heap
             //tenemos que usar PosicionElementoRating por la ordenacion
-            PriorityQueue<PosicionElementoRating> heapUSR = new PriorityQueue();
-            for(Instance dataUSR : informacionUsuario.getListInstance()){
+            PriorityQueue<PosicionElementoRating> heapUSR = new PriorityQueue(sortedDataUSR);
+            /*for(Instance dataUSR : informacionUsuario.getListInstance()){
                 int idElem = (int)dataUSR.getElementAtPos(posIDElem);
                 double rating = (double)dataUSR.getElementAtPos(posRating);
                 PosicionElementoRating dat = new PosicionElementoRating(idElem,rating);
                 heapUSR.add(dat);
-            }
+            }*/
             //heap del usuario a comparar
             PriorityQueue<PosicionElementoRating> heapOtro = new PriorityQueue();
             for(Instance dataUSR : informacionUsuarioCompara.getListInstance()){

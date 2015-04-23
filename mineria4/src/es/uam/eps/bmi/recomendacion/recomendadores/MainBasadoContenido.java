@@ -23,13 +23,13 @@ public class MainBasadoContenido {
         Instances instanciasTags = lectorTags.leeFichero("./src/movie_tags.dat");
         
         RecomendadorBasadoContenido recomendador = new RecomendadorBasadoContenido();
-        int idUsuario = 78;
+        int idUsuario = 75;
         int idElem = 110;
         System.out.println("Buscando...");
-        List<Recomendacion> recomendaciones = recomendador.recomiendaUsuarioElem("userID", "rating", "movieID", "tagID", "tagWeight", idUsuario, idElem, instanciasRated, instanciasTags);
+        List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", "tagID", "tagWeight", idUsuario, instanciasRated, instanciasTags);
         
         System.out.println("Recomendaciones");
-        for(int i=0; i< 1; i++){
+        for(int i=0; i< 20; i++){
             Recomendacion r = recomendaciones.get(i);
             System.out.println("movieID = "+r.getIdElemRecom() +"\t"+ r.getPuntuacion());
         }
