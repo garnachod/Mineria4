@@ -9,7 +9,9 @@ import es.uam.eps.bmi.recomendacion.datos.Instance;
 import es.uam.eps.bmi.recomendacion.datos.Instances;
 import es.uam.eps.bmi.recomendacion.datos.Recomendacion;
 import es.uam.eps.bmi.recomendacion.lectores.LectorUserRated;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 /**
@@ -28,14 +30,18 @@ public class MainEvaluacionFiltradoColaborativo {
         //System.out.println(instancias.getInstancesOcultas().nInstances());
         
         //
-        int idUsuario = 75;
-        List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
-        System.out.println("calculando MAE");
-        double mae = MainEvaluacionFiltradoColaborativo.calculaMAE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
-        System.out.println("MAE es: " + mae);
-        System.out.println("calculando RMSE");
-        double rmse = MainEvaluacionFiltradoColaborativo.calculaRMSE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
-        System.out.println("RMSE es: " + rmse);
+        double mae = 0;
+        double rmse = 0;
+        ArrayList<Integer> idsUser = instancias.getListaIDNoRepetidosColumna("userID");
+        for(int idUsuario:idsUser){
+            System.out.println(idUsuario);
+            List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
+            mae += MainEvaluacionFiltradoColaborativo.calculaMAE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
+            rmse += MainEvaluacionFiltradoColaborativo.calculaRMSE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
+        }
+        
+        System.out.println("MAE es: " + mae/idsUser.size());
+        System.out.println("RMSE es: " + rmse/idsUser.size());
         
     }
     public static double calculaMAE(String TagUsuario,String TagRating,String TagIDElem, int idUsuario, Instances instancias, List<Recomendacion> recomendaciones){
@@ -50,7 +56,7 @@ public class MainEvaluacionFiltradoColaborativo {
         if(informacionUsuario.nInstances() <= 0){
             return 0;
         }
-        System.out.println("Instancias Test: " + informacionUsuario.nInstances());
+        //System.out.println("Instancias Test: " + informacionUsuario.nInstances());
         int posRating = instancias.getPosFromColumn(TagRating);
         int posIDElem = instancias.getPosFromColumn(TagIDElem);
         for(Instance inst : informacionUsuario.getListInstance()){
@@ -84,7 +90,7 @@ public class MainEvaluacionFiltradoColaborativo {
         if(informacionUsuario.nInstances() <= 0){
             return 0;
         }
-        System.out.println("Instancias Test: " + informacionUsuario.nInstances());
+        //System.out.println("Instancias Test: " + informacionUsuario.nInstances());
         int posRating = instancias.getPosFromColumn(TagRating);
         int posIDElem = instancias.getPosFromColumn(TagIDElem);
         for(Instance inst : informacionUsuario.getListInstance()){
