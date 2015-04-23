@@ -10,9 +10,12 @@ import es.uam.eps.bmi.recomendacion.datos.Instances;
 import es.uam.eps.bmi.recomendacion.datos.MemSimilitud;
 import es.uam.eps.bmi.recomendacion.datos.Recomendacion;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 /**
  *
@@ -20,11 +23,46 @@ import java.util.PriorityQueue;
  */
 public class RecomendadorBasadoContenido {
     private PriorityQueue<MemSimilitud> similitudes;
-    private HashMap<Integer, Instances> InstancesDeIDElem;
+    private HashMap<Integer, Instances> InstancesDeIDElem = null;
     private int K = 20;
+    private ArrayList<Integer> idsElemNoRep = null;
+    private HashMap<Integer, HashMap<Integer, Double>> similitudDadaElemento = null;
     
-    public List<Recomendacion> recomiendaUsuarioElem(String TagUsuario,String TagRating,String TagIDElem, String tagIDStr,String tagRate, int idUsuario, int idElem, Instances instanciasRated, Instances instanciasDataInfo){
+    public List<Recomendacion> recomiendaUsuario(String TagUsuario,String TagRating,String TagIDElem, String tagIDStr,String tagRate, int idUsuario, Instances instanciasRated, Instances instanciasDataInfo){
         ArrayList<Recomendacion> recomendacion = new ArrayList<>();
+        //cogemos las instancias votadas solo de un usuario dado
+        Instances informacionUsuario = instanciasRated.getListInstancesWhereColumnEquals(TagUsuario, idUsuario);
+        if(informacionUsuario.nInstances() <= 0){
+            return recomendacion;
+        }
+        if(this.idsElemNoRep==null){
+            this.idsElemNoRep = instanciasDataInfo.getListaIDNoRepetidosColumna(TagIDElem);
+            //System.out.println(idsElemNoRep.size());
+            if(idsElemNoRep.size() <= 0){
+                return recomendacion;
+            }
+        }
+        //hay que eliminar los ids ya votados por el usuario
+        ArrayList<Integer> idsElemNoRepNoUser = new ArrayList<>();
+        for(int idElemento:this.idsElemNoRep){
+            if(informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, idElemento).isEmpty()){
+                idsElemNoRepNoUser.add(idElemento);
+            }
+        }
+        //
+        for(int idElemento:idsElemNoRepNoUser){
+            Recomendacion recomendacionAux = this.recomiendaUsuarioElem(TagUsuario, TagRating, TagIDElem, tagIDStr, tagRate, idUsuario, idElemento, informacionUsuario, instanciasDataInfo);
+            if(recomendacionAux != null){
+                recomendacion.add(recomendacionAux);
+            }
+            //System.out.println(idElemento);
+        }
+        Collections.sort(recomendacion);
+        return recomendacion;
+    }
+    
+    public Recomendacion recomiendaUsuarioElem(String TagUsuario,String TagRating,String TagIDElem, String tagIDStr,String tagRate, int idUsuario, int idElem, Instances instanciasRated, Instances instanciasDataInfo){
+        Recomendacion recomendacion = null;
         this.similitudes = new PriorityQueue();
         //posicion para las busquedas
         int posInformacionUsarioRated = instanciasRated.getPosFromColumn(TagUsuario);
@@ -38,48 +76,95 @@ public class RecomendadorBasadoContenido {
         if(informacionUsuario.nInstances() <= 0){
             return recomendacion;
         }
-        System.out.println("usuario encontrado");
+        
         //buscamos las Instancias de una pelicula
         //para eso primero buscamos los id de pelicula
-        ArrayList<Integer> idsElemNoRep = instanciasDataInfo.getListaIDNoRepetidosColumna(TagIDElem);
-        if(idsElemNoRep.size() <= 0){
-            return recomendacion;
+        if(this.idsElemNoRep==null){
+            this.idsElemNoRep = instanciasDataInfo.getListaIDNoRepetidosColumna(TagIDElem);
+            if(idsElemNoRep.size() <= 0){
+                return recomendacion;
+            }
         }
+        
         //
-        this.InstancesDeIDElem = new HashMap<>();
-        for(int identificador:idsElemNoRep){
-            Instances inst = instanciasDataInfo.getListInstancesWhereColumnEquals(TagIDElem, identificador);
-            instanciasDataInfo = instanciasDataInfo.getListInstancesWhereColumnDistinct(TagIDElem, identificador);
-            this.InstancesDeIDElem.put(identificador, inst);
+        if(this.InstancesDeIDElem == null){
+            this.InstancesDeIDElem = new HashMap<>();
+            for(int identificador:idsElemNoRep){
+                Instances inst = instanciasDataInfo.getListInstancesWhereColumnEquals(TagIDElem, identificador);
+                instanciasDataInfo = instanciasDataInfo.getListInstancesWhereColumnDistinct(TagIDElem, identificador);
+                this.InstancesDeIDElem.put(identificador, inst);
+            } 
         }
-        System.out.println("Instances ordenadas");
+        
+        /*if(this.similitudDadaElemento == null){
+            this.similitudDadaElemento = new HashMap<>();
+        }*/
         //Instances elemBase = instanciasDataInfo.getListInstancesWhereColumnEquals(TagIDElem, idElem);
         Instances elemBase = this.InstancesDeIDElem.get(idElem);
+        
+        SortedSet<PosicionElementoRating> sortedElemBase = new TreeSet();
+        for(Instance dataElemBase : elemBase.getListInstance()){
+            int idElemAux = (int)dataElemBase.getElementAtPos(posTagIDTag);
+            int rating = (int)dataElemBase.getElementAtPos(posTagRate);
+            PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
+            sortedElemBase.add(dat);
+        }
+        
         for(int identificadorElem : idsElemNoRep){
             if(identificadorElem == idElem){
                 continue;
             }
-            //System.out.println(identificadorElem);
-            PriorityQueue<PosicionElementoRating> heapElemBase = new PriorityQueue();
-            for(Instance dataElemBase : elemBase.getListInstance()){
-                int idElemAux = (int)dataElemBase.getElementAtPos(posTagIDTag);
-                int rating = (int)dataElemBase.getElementAtPos(posTagRate);
-                PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
-                heapElemBase.add(dat);
+            /*if(this.similitudDadaElemento.size() > 8000){
+                this.similitudDadaElemento = new HashMap<>();
+            }*/
+           /* double sim = -10;
+            if(this.similitudDadaElemento.containsKey(idElem)){
+                HashMap<Integer, Double> similitudDadaElementoDadaElemento = this.similitudDadaElemento.get(idElem);
+                if(similitudDadaElementoDadaElemento.containsKey(identificadorElem)){
+                    sim = similitudDadaElementoDadaElemento.get(identificadorElem);
+                    System.out.println(identificadorElem);
+                }
             }
-            //heap del elemento a comparar
-            //Instances elemComp = instanciasDataInfo.getListInstancesWhereColumnEquals(TagIDElem, identificadorElem);
-            //instanciasDataInfo = instanciasDataInfo.getListInstancesWhereColumnDistinct(TagIDElem, identificadorElem);
-            Instances elemComp = this.InstancesDeIDElem.get(identificadorElem);
-            PriorityQueue<PosicionElementoRating> heapElemComp = new PriorityQueue();
-            for(Instance dataElemComp : elemComp.getListInstance()){
-                int idElemAux = (int)dataElemComp.getElementAtPos(posTagIDTag);
-                int rating = (int)dataElemComp.getElementAtPos(posTagRate);
-                PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
-                heapElemComp.add(dat);
-            }
-            //calcular coseno == medida de similitud
-            double sim = this.calculaCoseno(heapElemBase, heapElemComp);
+            if(sim == -10){*/
+                //System.out.println(identificadorElem);
+                PriorityQueue<PosicionElementoRating> heapElemBase = new PriorityQueue(sortedElemBase);
+                
+                /*for(Instance dataElemBase : elemBase.getListInstance()){
+                    int idElemAux = (int)dataElemBase.getElementAtPos(posTagIDTag);
+                    int rating = (int)dataElemBase.getElementAtPos(posTagRate);
+                    PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
+                    heapElemBase.add(dat);
+                }*/
+                //heap del elemento a comparar
+                //Instances elemComp = instanciasDataInfo.getListInstancesWhereColumnEquals(TagIDElem, identificadorElem);
+                //instanciasDataInfo = instanciasDataInfo.getListInstancesWhereColumnDistinct(TagIDElem, identificadorElem);
+                Instances elemComp = this.InstancesDeIDElem.get(identificadorElem);
+                PriorityQueue<PosicionElementoRating> heapElemComp = new PriorityQueue();
+                for(Instance dataElemComp : elemComp.getListInstance()){
+                    int idElemAux = (int)dataElemComp.getElementAtPos(posTagIDTag);
+                    int rating = (int)dataElemComp.getElementAtPos(posTagRate);
+                    PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
+                    heapElemComp.add(dat);
+                }
+                //calcular coseno == medida de similitud
+                double sim = this.calculaCoseno(heapElemBase, heapElemComp);
+                /*if(this.similitudDadaElemento.containsKey(identificadorElem)){
+                    HashMap<Integer, Double> similitudDadaElementoDadaElemento = this.similitudDadaElemento.get(identificadorElem);
+                    similitudDadaElementoDadaElemento.put(idElem, sim);
+                }else{
+                    HashMap<Integer, Double> similitudDadaElementoDadaElemento = new HashMap<>();
+                    similitudDadaElementoDadaElemento.put(idElem, sim);
+                    this.similitudDadaElemento.put(identificadorElem, similitudDadaElementoDadaElemento);
+                }*/
+                /*if(this.similitudDadaElemento.containsKey(idElem)){
+                    HashMap<Integer, Double> similitudDadaElementoDadaElemento = this.similitudDadaElemento.get(idElem);
+                    similitudDadaElementoDadaElemento.put(identificadorElem, sim);
+                }else{
+                    HashMap<Integer, Double> similitudDadaElementoDadaElemento = new HashMap<>();
+                    similitudDadaElementoDadaElemento.put(identificadorElem, sim);
+                    this.similitudDadaElemento.put(idElem, similitudDadaElementoDadaElemento);
+                }*/
+            //}
             MemSimilitud mem = new MemSimilitud(identificadorElem, sim);
             this.similitudes.add(mem);
         }
@@ -113,11 +198,11 @@ public class RecomendadorBasadoContenido {
             Instances inst = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
             Instance instance = inst.getInstanceAtPos(0);
             double rating = (double) instance.getElementAtPos(posRatingRated);
-            System.out.println(elemID + "\t" + similitud +"\t" + rating);
+            //System.out.println(elemID + "\t" + similitud +"\t" + rating);
             ratingElem.addElement(rating, similitud);
         }
-        Recomendacion rec = new Recomendacion(idElem, ratingElem.getRating());
-        recomendacion.add(rec);
+        recomendacion = new Recomendacion(idElem, ratingElem.getRating());
+        
         return recomendacion;
     }
     private double calculaCoseno(PriorityQueue<PosicionElementoRating> heapURS, PriorityQueue<PosicionElementoRating> heapOtro){
