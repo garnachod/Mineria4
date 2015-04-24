@@ -31,6 +31,7 @@ public class ClusteringLocal implements MetricaNodo {
         if (grado < 2){
             return 0;
         }        
+        
         int conexionesPosibles = ((grado * (grado - 1)) / 2);
         return (conexionesReales / (double)conexionesPosibles);
         
@@ -42,7 +43,7 @@ public class ClusteringLocal implements MetricaNodo {
         g.addArista("a", "b");
         g.addArista("b", "c");
         g.addArista("b", "d");
-        g.addArista("d", "a");
+        
         g.addArista("a", "c");
         g.addArista("b", "c");
         g.addArista("d", "c");
