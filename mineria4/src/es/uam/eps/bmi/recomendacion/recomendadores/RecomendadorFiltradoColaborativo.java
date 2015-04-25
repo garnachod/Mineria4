@@ -23,7 +23,7 @@ import org.apache.commons.collections15.map.FastHashMap;
  * @author dani
  */
 public class RecomendadorFiltradoColaborativo {
-    private int K = 20;
+    private int K = 100;
     private int incidenciasMinimo = 0;
     private PriorityQueue<MemSimilitud> similitudes;
     private HashMap<Integer, Instances> InstancesDeIDElem = null;
@@ -76,6 +76,9 @@ public class RecomendadorFiltradoColaborativo {
             sortedDataUSR.add(dat);
         }
         for(int idUsuarioCompara:idsDiferentesUsuarios){
+            if(idUsuarioCompara == idUsuario){
+                continue;
+            }
             //conseguimos el user id de una instancia, para seguir un orden usamos la del primer usuario siguente
             //Instance primeraInstancia = informacionNoUsuario.getInstanceAtPos(0);
             //int idUsuarioCompara = (int)primeraInstancia.getElementAtPos(posInformacionUsario);
