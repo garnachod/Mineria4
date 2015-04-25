@@ -34,7 +34,7 @@ public class MainEvaluacionFiltradoColaborativo {
         double rmse = 0;
         ArrayList<Integer> idsUser = instancias.getListaIDNoRepetidosColumna("userID");
         for(int idUsuario:idsUser){
-            System.out.println(idUsuario);
+            //System.out.println(idUsuario);
             List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", idUsuario, instancias);
             mae += MainEvaluacionFiltradoColaborativo.calculaMAE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
             rmse += MainEvaluacionFiltradoColaborativo.calculaRMSE("userID", "rating", "movieID", idUsuario, instancias, recomendaciones);
