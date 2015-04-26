@@ -17,7 +17,8 @@ import java.io.IOException;
  *
  * @author dani
  */
-public class LectorUserRated {
+public class LectorUserRated extends LectorInstances{
+    @Override
     public Instances leeFichero(String nombreFichero) throws FileNotFoundException, IOException{
         BufferedReader in = new BufferedReader(new FileReader(new File(nombreFichero)));
         Instances instances = new Instances();

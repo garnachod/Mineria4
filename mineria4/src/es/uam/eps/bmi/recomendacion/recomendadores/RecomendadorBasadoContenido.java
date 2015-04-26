@@ -25,6 +25,7 @@ public class RecomendadorBasadoContenido extends Recomendador{
     private PriorityQueue<MemSimilitud> similitudes;
     private HashMap<Integer, Instances> InstancesDeIDElem = null;
     private int K = 20;
+    private int incidenciasMinimo = 2;
     private ArrayList<Integer> idsElemNoRep = null;
     private HashMap<Integer, HashMap<Integer, Double>> similitudDadaElemento = null;
     
@@ -105,8 +106,8 @@ public class RecomendadorBasadoContenido extends Recomendador{
             PosicionElementoRating dat = new PosicionElementoRating(idElemAux,rating);
             sortedElemBase.add(dat);
         }
-        
-        for(int identificadorElem : idsElemNoRep){
+        ArrayList<Integer> idsCompara = informacionUsuario.getListaIDNoRepetidosColumna(TagIDElem);
+        for(int identificadorElem : idsCompara){
             if(identificadorElem == idElem){
                 continue;
             }
@@ -137,30 +138,31 @@ public class RecomendadorBasadoContenido extends Recomendador{
             }
             MemSimilitud mem = this.similitudes.poll();
             //System.out.println(mem.getId() + "\t" + mem.getSimilitud());
-            int idElemAux = mem.getId();
-            if(informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, idElemAux).isEmpty()){
-                
-            }else{
+            if(mem.getSimilitud() > 0){
                 mejoresCosenos.add(mem);
                 i++;
             }
+            
         }
         
          //conseguimos el rating dado un item
-        AuxObtenerRating ratingElem = new AuxObtenerRating();
-        for(MemSimilitud mem : mejoresCosenos){
-            int elemID = mem.getId();
-            double similitud = mem.getSimilitud();
-            
-            //ha de tener solo una instancia
-            Instances inst = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
-            Instance instance = inst.getInstanceAtPos(0);
-            double rating = (double) instance.getElementAtPos(posRatingRated);
-            //System.out.println(elemID + "\t" + similitud +"\t" + rating);
-            ratingElem.addElement(rating, similitud);
+        if(mejoresCosenos.size() >= this.incidenciasMinimo){
+            AuxObtenerRating ratingElem = new AuxObtenerRating();
+            for(MemSimilitud mem : mejoresCosenos){
+                int elemID = mem.getId();
+                double similitud = mem.getSimilitud();
+
+                //ha de tener solo una instancia
+                Instances inst = informacionUsuario.getListInstancesWhereColumnEquals(TagIDElem, elemID);
+                Instance instance = inst.getInstanceAtPos(0);
+                double rating = (double) instance.getElementAtPos(posRatingRated);
+                //System.out.println(elemID + "\t" + similitud +"\t" + rating);
+                ratingElem.addElement(rating, similitud);
+            }
+            recomendacion = new Recomendacion(idElem, ratingElem.getRating());
+
+            return recomendacion;
         }
-        recomendacion = new Recomendacion(idElem, ratingElem.getRating());
-        
-        return recomendacion;
+        return null;
     }
 }

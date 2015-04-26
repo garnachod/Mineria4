@@ -46,7 +46,8 @@ public class MainBasadoContenido {
         time_start = System.currentTimeMillis();
         List<Recomendacion> recomendaciones = recomendador.recomiendaUsuario("userID", "rating", "movieID", "tagID", "tagWeight", idUsuario, instanciasRated, instanciasTags);
         time_end = System.currentTimeMillis(); 
-        System.out.println("the task has taken " + ( time_end - time_start )/1000 + " seconds");
+        System.out.println("the task has taken " + ( time_end - time_start ) + " seconds");
+        
         //se imprimen los resultados
         System.out.println("Recomendaciones:\nmovieID\trating");
         for(int i=0; i< recomendaciones.size() && i < 50; i++){
