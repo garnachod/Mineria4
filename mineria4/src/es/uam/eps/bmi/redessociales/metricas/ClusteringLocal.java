@@ -25,7 +25,7 @@ public class ClusteringLocal implements MetricaNodo {
     
     public static void main (String args[]) {
         ClusteringLocal cl = new ClusteringLocal();
-        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
+        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
         for (String nodo : g.getVertices()) {
             System.out.println(nodo + ": " + cl.calcular(g, nodo));
         }
