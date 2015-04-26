@@ -23,7 +23,7 @@ import org.apache.commons.collections15.map.FastHashMap;
  * @author dani
  */
 public class RecomendadorFiltradoColaborativo extends Recomendador{
-    private int K = 1;
+    private int K = 100;
     private int incidenciasMinimo = 1;
     private HashMap<Integer, Instances> InstancesDeIDElem = null;
     private ArrayList<Integer> idsDiferentesUsuarios = null;
