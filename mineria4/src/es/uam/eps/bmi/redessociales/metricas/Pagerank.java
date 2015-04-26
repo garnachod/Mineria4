@@ -1,33 +1,37 @@
 
 package es.uam.eps.bmi.redessociales.metricas;
 
-import edu.uci.ics.jung.algorithms.metrics.Metrics;
+import edu.uci.ics.jung.algorithms.scoring.PageRank;
 import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
 import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
-import java.util.Map;
+
 
 /**
  * @author Diego Castaño y Daniel Garnacho
  */
-public class ClusteringLocal implements MetricaNodo {
-    
+public class Pagerank implements MetricaNodo {
+
     GrafoNoDirigido grafoActual = null;
-    Map<String, Double> factores = null;
+    PageRank<String, Integer> ranker = null;
     
     @Override
     public double calcular(GrafoNoDirigido grafo, String idNodo) {
-        if (grafoActual == null || !grafoActual.equals(grafo)) {
+        if (grafoActual == null || !grafoActual.equals(grafo)){
             grafoActual = grafo;
-            factores = Metrics.clusteringCoefficients(grafo.getGraph());
+            ranker = new PageRank<>(grafo.getGraph(), 0.15);
+            ranker.setTolerance(0.001);
+            ranker.setMaxIterations(40);
+            ranker.evaluate();
         }
-        return factores.get(idNodo);
+        
+        return (Double) ranker.getVertexScore(idNodo);
     }
-    
     public static void main (String args[]) {
-        ClusteringLocal cl = new ClusteringLocal();
+        Pagerank pr = new Pagerank();
         GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
         for (String nodo : g.getVertices()) {
-            System.out.println(nodo + ": " + cl.calcular(g, nodo));
+            System.out.println(nodo + ": " + pr.calcular(g, nodo));
         }
     }
+    
 }
