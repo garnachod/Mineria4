@@ -17,7 +17,16 @@ import java.io.IOException;
  *
  * @author dani
  */
-public class LectorMovieTags {
+public class LectorMovieTags extends LectorInstances{
+
+    /**
+     *
+     * @param nombreFichero
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    @Override
     public Instances leeFichero(String nombreFichero) throws FileNotFoundException, IOException{
         BufferedReader in = new BufferedReader(new FileReader(new File(nombreFichero)));
         Instances instances = new Instances();
