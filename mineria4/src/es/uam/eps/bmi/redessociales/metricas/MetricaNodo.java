@@ -13,4 +13,5 @@ public interface MetricaNodo {
      * @return
      */
     public double calcular (GrafoNoDirigido grafo, String idNodo);
+    
 }

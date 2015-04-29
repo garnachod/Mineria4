@@ -57,7 +57,7 @@ public class GeneradorBarabasiAlbert {
         GeneradorBarabasiAlbert gba = new GeneradorBarabasiAlbert(1);        
         // Sacar grafo no dirigido
         GrafoNoDirigido g = new GrafoNoDirigido((Graph<String, Integer>) gba.getGrafo(1000));
-        EscritorGrafoNoDirigido.escribirGrafo(g, "barabasi.csv");
+        EscritorGrafoNoDirigido.escribirGrafo(g, "datos/barabasi.csv");
         
     }
 }

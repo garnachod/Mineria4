@@ -8,7 +8,7 @@ import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 /**
  * @author Diego Castaño y Daniel Garnacho
  */
-public class Embededness implements MetricaArista {
+public class Embeddedness implements MetricaArista {
 
     @Override
     public double calcular(GrafoNoDirigido grafo, String idNodoOrigen, String idNodoDestino) {
@@ -16,7 +16,7 @@ public class Embededness implements MetricaArista {
         int gradoOrigen = grafo.getGrado(idNodoOrigen);
         int gradoDestino = grafo.getGrado(idNodoDestino);
         for (String vecino : grafo.getVecinos(idNodoOrigen)) {
-            if (grafo.getVecinos(idNodoDestino).contains(vecino)) {
+            if (grafo.getVecinos(idNodoDestino).contains(vecino) && !vecino.equals(idNodoOrigen) && !vecino.equals(idNodoDestino)) {
                 vecinosComunes++;
             }
         }
@@ -29,7 +29,7 @@ public class Embededness implements MetricaArista {
     }
     
     public static void main (String args[]) {
-        Embededness e = new Embededness();
+        Embeddedness e = new Embeddedness();
         GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
         for (Pair<String> arista : g.getAristas()) {
             System.out.println(arista.getFirst() + "-" + arista.getSecond() + ": " + e.calcular(g, arista.getFirst(), arista.getSecond()));

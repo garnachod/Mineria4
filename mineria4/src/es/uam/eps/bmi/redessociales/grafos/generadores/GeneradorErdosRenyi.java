@@ -56,10 +56,10 @@ public class GeneradorErdosRenyi {
     
     public static void main (String args[]) {
         
-        GeneradorErdosRenyi ger = new GeneradorErdosRenyi(100);
+        GeneradorErdosRenyi ger = new GeneradorErdosRenyi(1000);
         // Sacar grafo no dirigido
         GrafoNoDirigido g = new GrafoNoDirigido(ger.getGrafo());
-        EscritorGrafoNoDirigido.escribirGrafo(g, "erdos.csv");
+        EscritorGrafoNoDirigido.escribirGrafo(g, "datos/erdos.csv");
         
     }
 }

@@ -1,0 +1,10 @@
+small1 3 1.0
+small1 2 1.0
+small1 9 1.0
+facebook4K 2808 1.0
+facebook4K 32 1.0
+facebook4K 3003 1.0
+facebook4K 2767 1.0
+facebook4K 3899 1.0
+facebook4K 3897 1.0
+facebook4K 785 1.0
