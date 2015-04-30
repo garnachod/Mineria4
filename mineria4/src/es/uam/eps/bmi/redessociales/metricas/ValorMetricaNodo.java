@@ -1,6 +1,9 @@
 package es.uam.eps.bmi.redessociales.metricas;
 
-
+/**
+ * Bean para ordenar valores de métricas de un nodo
+ * @author Diego Castaño y Daniel Garnacho
+ */
 class ValorMetricaNodo implements Comparable {
 
     private String redSocial;

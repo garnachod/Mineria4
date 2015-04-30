@@ -7,6 +7,7 @@ import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 
 
 /**
+ * Cálculo de pagerank de un nodo
  * @author Diego Castaño y Daniel Garnacho
  */
 public class Pagerank implements MetricaNodo {
@@ -28,7 +29,13 @@ public class Pagerank implements MetricaNodo {
     }
     public static void main (String args[]) {
         Pagerank pr = new Pagerank();
-        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
+        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/small1.csv");
+        System.out.println("Small1");
+        for (String nodo : g.getVertices()) {
+            System.out.println(nodo + ": " + pr.calcular(g, nodo));
+        }
+        g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
+        System.out.println("Small2");
         for (String nodo : g.getVertices()) {
             System.out.println(nodo + ": " + pr.calcular(g, nodo));
         }

@@ -8,6 +8,7 @@ import java.util.Map;
 
 
 /**
+ * Cálculo de clustering global
  * @author Diego Castaño y Daniel Garnacho
  */
 public class ClusteringGlobal implements MetricaGrafo {

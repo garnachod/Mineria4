@@ -5,6 +5,7 @@ import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 import java.util.HashMap;
 
 /**
+ * Calcula la frecuencia de aparicion de cada grado en un grafo no dirigido
  * @author Diego Castaño y Daniel Garnacho
  */
 public class DistribucionGrado {

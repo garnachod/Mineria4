@@ -8,10 +8,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
+ * Escribe un GrafoNoDirigido a fichero
  * @author Diego Castaño y Daniel Garnacho
  */
 public class EscritorGrafoNoDirigido {
-
+    /**
+      * Escribe un GrafoNoDirigido a fichero 
+     * @param grafo
+     * @param rutaFichero 
+     */
     public static void escribirGrafo(GrafoNoDirigido grafo, String rutaFichero) {
         FileWriter writer = null;
         try {

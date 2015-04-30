@@ -1,7 +1,6 @@
 
 package es.uam.eps.bmi.redessociales.grafos.lectores;
 
-import edu.uci.ics.jung.graph.UndirectedGraph;
 import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -14,10 +13,15 @@ import java.util.logging.Logger;
 
 
 /**
+ * Lee de fichero un grafo no dirigido
  * @author Diego Castaño y Daniel Garnacho
  */
 public class LectorGrafoNoDirigido {
-    
+    /**
+     * Lee de fichero un grafo no dirigido
+     * @param ruta
+     * @return Grafo leído
+     */
     public static GrafoNoDirigido leerCSV (String ruta) {
         
         FileInputStream fis = null;

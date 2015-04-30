@@ -6,6 +6,7 @@ import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
 import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 
 /**
+ * Calcula arraigo de los arcos de un grafo no dirigido
  * @author Diego Castaño y Daniel Garnacho
  */
 public class Embeddedness implements MetricaArista {
@@ -30,7 +31,13 @@ public class Embeddedness implements MetricaArista {
     
     public static void main (String args[]) {
         Embeddedness e = new Embeddedness();
-        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
+        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/small1.csv");
+        System.out.println("Small1");
+        for (Pair<String> arista : g.getAristas()) {
+            System.out.println(arista.getFirst() + "-" + arista.getSecond() + ": " + e.calcular(g, arista.getFirst(), arista.getSecond()));
+        }
+        g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
+        System.out.println("Small2");
         for (Pair<String> arista : g.getAristas()) {
             System.out.println(arista.getFirst() + "-" + arista.getSecond() + ": " + e.calcular(g, arista.getFirst(), arista.getSecond()));
         }

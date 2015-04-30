@@ -32,7 +32,7 @@ public class AuxObtenerRating {
     }
     /**
      * retorna el numero de incidencias que ha tenido este rating
-     * @return 
+     * @return num de incidencias
      */
     public int getIncidencias(){
         return this.incidencias;

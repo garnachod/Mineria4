@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
+ * Wrapper de UndirectedGraph
  * @author Diego Castaño y Daniel Garnacho
  */
 public class GrafoNoDirigido {

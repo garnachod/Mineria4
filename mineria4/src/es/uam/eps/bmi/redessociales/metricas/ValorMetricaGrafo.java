@@ -3,6 +3,7 @@ package es.uam.eps.bmi.redessociales.metricas;
 
 
 /**
+ * Bean para ordenar valores de métricas de un grafo
  * @author Diego Castaño y Daniel Garnacho
  */
 public class ValorMetricaGrafo implements Comparable {

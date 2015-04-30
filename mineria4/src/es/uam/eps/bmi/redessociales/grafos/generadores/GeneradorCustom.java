@@ -1,13 +1,13 @@
 
 package es.uam.eps.bmi.redessociales.grafos.generadores;
 
-import edu.uci.ics.jung.graph.Graph;
 import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
 import es.uam.eps.bmi.redessociales.grafos.escritores.EscritorGrafoNoDirigido;
 import java.util.Random;
 
 
 /**
+ * Genera un grafo "loner"
  * @author Diego Castaño y Daniel Garnacho
  */
 public class GeneradorCustom {

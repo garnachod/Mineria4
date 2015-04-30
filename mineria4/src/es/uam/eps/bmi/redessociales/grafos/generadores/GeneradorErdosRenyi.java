@@ -1,10 +1,8 @@
 
 package es.uam.eps.bmi.redessociales.grafos.generadores;
 
-import edu.uci.ics.jung.algorithms.generators.random.BarabasiAlbertGenerator;
 import edu.uci.ics.jung.algorithms.generators.random.ErdosRenyiGenerator;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.SparseGraph;
 import edu.uci.ics.jung.graph.UndirectedGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import es.uam.eps.bmi.redessociales.grafos.GrafoNoDirigido;
@@ -14,6 +12,7 @@ import org.apache.commons.collections15.Factory;
 
 
 /**
+ * Genera un grafo de Erdos-Renyi
  * @author Diego Castaño y Daniel Garnacho
  */
 public class GeneradorErdosRenyi {

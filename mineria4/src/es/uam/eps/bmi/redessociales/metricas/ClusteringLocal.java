@@ -7,6 +7,7 @@ import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 import java.util.Map;
 
 /**
+ * Cálculo de clústering local
  * @author Diego Castaño y Daniel Garnacho
  */
 public class ClusteringLocal implements MetricaNodo {
@@ -25,7 +26,13 @@ public class ClusteringLocal implements MetricaNodo {
     
     public static void main (String args[]) {
         ClusteringLocal cl = new ClusteringLocal();
-        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
+        GrafoNoDirigido g = LectorGrafoNoDirigido.leerCSV("datos/small1.csv");
+        System.out.println("Small1");
+        for (String nodo : g.getVertices()) {
+            System.out.println(nodo + ": " + cl.calcular(g, nodo));
+        }
+        System.out.println("Small2");
+        g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
         for (String nodo : g.getVertices()) {
             System.out.println(nodo + ": " + cl.calcular(g, nodo));
         }

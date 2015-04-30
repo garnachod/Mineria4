@@ -11,6 +11,7 @@ import org.apache.commons.collections15.Factory;
 
 
 /**
+ * Genera un grafo Barabasi
  * @author Diego Castaño y Daniel Garnacho
  */
 public class GeneradorBarabasiAlbert {

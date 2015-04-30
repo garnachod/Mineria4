@@ -3,6 +3,7 @@ package es.uam.eps.bmi.redessociales.metricas;
 
 
 /**
+ * Bean para ordenar valores de métricas de una arista
  * @author Diego Castaño y Daniel Garnacho
  */
 public class ValorMetricaArista implements Comparable {

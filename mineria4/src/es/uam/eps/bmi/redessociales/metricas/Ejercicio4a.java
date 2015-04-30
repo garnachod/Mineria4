@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 
 /**
+ * Ejercicio 4a.
  * @author Diego Castaño y Daniel Garnacho
  */
 public class Ejercicio4a {

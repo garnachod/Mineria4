@@ -7,6 +7,7 @@ import es.uam.eps.bmi.redessociales.grafos.lectores.LectorGrafoNoDirigido;
 
 
 /**
+ * Cálculo de asortatividad
  * @author Diego Castaño y Daniel Garnacho
  */
 public class Assortativity implements MetricaGrafo {
@@ -48,10 +49,5 @@ public class Assortativity implements MetricaGrafo {
         g = LectorGrafoNoDirigido.leerCSV("datos/small2.csv");
         System.out.println("Assortativity: " + a.calcular(g));
         
-        g = LectorGrafoNoDirigido.leerCSV("datos/twitter.csv");
-        System.out.println("Assortativity: " + a.calcular(g));
-        
-        g = LectorGrafoNoDirigido.leerCSV("datos/fb.csv");
-        System.out.println("Assortativity: " + a.calcular(g));
     }  
 }
