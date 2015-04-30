@@ -14,13 +14,13 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
  */
 public class LectorMovieTags extends LectorInstances{
 
     /**
-     *
+     * Lector del fichero MovieTags
      * @param nombreFichero
      * @return
      * @throws FileNotFoundException

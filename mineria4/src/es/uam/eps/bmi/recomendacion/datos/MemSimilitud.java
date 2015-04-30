@@ -1,15 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uam.eps.bmi.recomendacion.datos;
 
 import es.uam.eps.bmi.recomendacion.recomendadores.PosicionElementoRating;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
+ * Objeto auxiliar para poder usar heaps u ordenar similitudes.
+ * Contiene un id y una similitud
+ * se ordena por similitud
  */
 public class MemSimilitud implements Comparable  {
     private int id;

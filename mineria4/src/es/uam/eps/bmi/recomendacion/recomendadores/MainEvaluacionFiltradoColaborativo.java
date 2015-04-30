@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
  */
 public class MainEvaluacionFiltradoColaborativo {
     private double sumaDiferenciasCuadrado = 0.0;

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uam.eps.bmi.recomendacion.recomendadores;
 
 import es.uam.eps.bmi.recomendacion.datos.Instance;
@@ -19,8 +14,8 @@ import java.util.TreeSet;
 import org.apache.commons.collections15.map.FastHashMap;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * Recomendador filtrado colaborativo
  */
 public class RecomendadorFiltradoColaborativo extends Recomendador{
     private int K = 25;
@@ -31,7 +26,15 @@ public class RecomendadorFiltradoColaborativo extends Recomendador{
     public RecomendadorFiltradoColaborativo(){
         
     }
-    
+    /**
+     * Recomienda una serie de elementos usando el algorimo de filtrado colaborativo
+     * @param TagUsuario Nombre de columna que contiene el id de Usuario
+     * @param TagRating Nombre de columna que contiene el rating
+     * @param TagIDElem Nombre de columna que contiene el id del elemento
+     * @param idUsuario usuario a devolver las recomendaciones
+     * @param instancias Instancias del fichero Rated movies o similar
+     * @return lista de recomendaciones ordenadas por Rating
+     */
     public List<Recomendacion> recomiendaUsuario(String TagUsuario,String TagRating,String TagIDElem, int idUsuario, Instances instancias){
         ArrayList<Recomendacion> recomendacion = new ArrayList<>();
         

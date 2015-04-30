@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package es.uam.eps.bmi.recomendacion.recomendadores;
 
 import es.uam.eps.bmi.recomendacion.datos.Instance;
@@ -18,8 +13,8 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * Recomendador basado en Contenido
  */
 public class RecomendadorBasadoContenido extends Recomendador{
     private PriorityQueue<MemSimilitud> similitudes;
@@ -28,7 +23,19 @@ public class RecomendadorBasadoContenido extends Recomendador{
     private int incidenciasMinimo = 2;
     private ArrayList<Integer> idsElemNoRep = null;
     private HashMap<Integer, HashMap<Integer, Double>> similitudDadaElemento = null;
-    
+    /**
+     * Recomienda un usuario utilizando un algoritmo de recomendacion basado en contenido
+     * 
+     * @param TagUsuario Nombre de columna que contiene el id de Usuario
+     * @param TagRating Nombre de columna que contiene el rating
+     * @param TagIDElem Nombre de columna que contiene el id del elemento
+     * @param tagIDStr Nombre de columna que contiene el id de TAG
+     * @param tagRate Nombre de columna que contiene el numero de Tags 
+     * @param idUsuario usuario a devolver las recomendaciones
+     * @param instanciasRated Instancias del fichero Rated movies o similar
+     * @param instanciasDataInfo Instancias del fichero Movie Tags o similar
+     * @return lista de recomendaciones ordenadas por Rating
+     */
     public List<Recomendacion> recomiendaUsuario(String TagUsuario,String TagRating,String TagIDElem, String tagIDStr,String tagRate, int idUsuario, Instances instanciasRated, Instances instanciasDataInfo){
         ArrayList<Recomendacion> recomendacion = new ArrayList<>();
         //cogemos las instancias votadas solo de un usuario dado
@@ -61,7 +68,19 @@ public class RecomendadorBasadoContenido extends Recomendador{
         Collections.sort(recomendacion);
         return recomendacion;
     }
-    
+    /**
+     * Obtiene el rating de un usuario a una pelicula, usuando el algoritmo basado en contenido
+     * @param TagUsuario
+     * @param TagRating
+     * @param TagIDElem
+     * @param tagIDStr
+     * @param tagRate
+     * @param idUsuario
+     * @param idElem
+     * @param instanciasRated
+     * @param instanciasDataInfo
+     * @return Rating simulado si se ha podido generar o null si no se ha podido
+     */
     public Recomendacion recomiendaUsuarioElem(String TagUsuario,String TagRating,String TagIDElem, String tagIDStr,String tagRate, int idUsuario, int idElem, Instances instanciasRated, Instances instanciasDataInfo){
         Recomendacion recomendacion = null;
         this.similitudes = new PriorityQueue();

@@ -12,12 +12,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
  */
 public class LectorUserRated extends LectorInstances{
+    /**
+     * Lector del fichero UserRated
+     * @param nombreFichero
+     * @return
+     * @throws FileNotFoundException
+     * @throws IOException 
+     */
     @Override
     public Instances leeFichero(String nombreFichero) throws FileNotFoundException, IOException{
         BufferedReader in = new BufferedReader(new FileReader(new File(nombreFichero)));

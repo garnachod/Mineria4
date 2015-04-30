@@ -46,7 +46,7 @@ public class GeneradorErdosRenyi {
         for (int i = 0; i < numNodosIniciales; i++) {
             seedVertices.add(i + "");
         }
-        erg = new ErdosRenyiGenerator(graphFactory, vertexFactory, edgeFactory, seedVertices.size(), 0.5);
+        erg = new ErdosRenyiGenerator(graphFactory, vertexFactory, edgeFactory, seedVertices.size(), 0.001);
     }
     
     public Graph<String, Integer> getGrafo () {

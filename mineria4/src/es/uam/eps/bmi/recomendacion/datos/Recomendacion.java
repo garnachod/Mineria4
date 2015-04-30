@@ -1,13 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package es.uam.eps.bmi.recomendacion.datos;
 
+package es.uam.eps.bmi.recomendacion.datos;
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
+ * Objeto auxiliar que guarda una recomendacion dado un id de elemento, se puede ordenar
+ * Contiene un id y una puntuacion
+ * se ordena por puntuacion
  */
 public class Recomendacion implements Comparable {
     private int idElemRecom;

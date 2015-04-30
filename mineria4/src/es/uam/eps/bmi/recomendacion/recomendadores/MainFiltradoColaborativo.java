@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
  */
 public class MainFiltradoColaborativo {
     public static void main(String[] args) throws Exception{

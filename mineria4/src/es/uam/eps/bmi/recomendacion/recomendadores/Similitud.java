@@ -8,10 +8,17 @@ package es.uam.eps.bmi.recomendacion.recomendadores;
 import java.util.PriorityQueue;
 
 /**
- *
- * @author dani
+ * @author Diego Castaño y Daniel Garnacho
+ * 
+ * Objeto que contiene las medidas de similitud programadas
  */
 public class Similitud {
+    /**
+     * retorna una similitud usando el metodo del coseno
+     * @param heapURS
+     * @param heapOtro
+     * @return similitud
+     */
     public static double coseno(PriorityQueue<PosicionElementoRating> heapURS, PriorityQueue<PosicionElementoRating> heapOtro){
         //sacamos de cada heap buscando coincidencias, si coinciden, se aniaden a la parte superior del coseno
         //multiplicando y siempre se anyaden al modulo
